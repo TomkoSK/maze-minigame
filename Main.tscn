@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://do4gjc6blpi8v"]
+
+[ext_resource type="PackedScene" uid="uid://djfyvo87iv3jf" path="res://Player.tscn" id="1_y7pjd"]
+[ext_resource type="Script" path="res://MazeManager.gd" id="3_x3t4f"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_y7pjd")]
+position = Vector2(-32, -39)
+motion_mode = 1
+SPEED = 300
+
+[node name="MazeManager" type="Node2D" parent="."]
+script = ExtResource("3_x3t4f")
