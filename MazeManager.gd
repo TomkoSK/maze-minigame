@@ -95,7 +95,6 @@ func _ready():
 			line.add_point(Vector2(tile.x+20, tile.y-20))
 			line.add_point(Vector2(tile.x+20, tile.y+20))
 			line.width = 3
-			line.default_color = Color(0, 0, 0, 1)
 			var shape = RectangleShape2D.new()
 			shape.set_size(Vector2(3, 40))
 			var collider = CollisionShape2D.new()
@@ -104,13 +103,12 @@ func _ready():
 			staticbody.add_child(collider)
 			staticbody.set_position(Vector2(tile.x+20, tile.y))
 			line.add_child(staticbody)
-			add_child(line)
+			$LineObject.add_child(line)
 		if(tile.bottomWall):
 			var line = Line2D.new()
 			line.add_point(Vector2(tile.x-20, tile.y+20))
 			line.add_point(Vector2(tile.x+20, tile.y+20))
 			line.width = 3
-			line.default_color = Color(0, 0, 0, 1)
 			var shape = RectangleShape2D.new()
 			shape.set_size(Vector2(40, 3))
 			var collider = CollisionShape2D.new()
@@ -119,4 +117,14 @@ func _ready():
 			staticbody.add_child(collider)
 			staticbody.set_position(Vector2(tile.x, tile.y+20))
 			line.add_child(staticbody)
-			add_child(line)
+			$LineObject.add_child(line)
+		$LineObject.modulate = Color(0.8, 0, 0, 1)
+
+func pulseLines():
+	var tween = create_tween()
+	tween.tween_property($LineObject, "modulate", Color(0.8, 0, 0, 1), 1.6).set_trans(Tween.TRANS_LINEAR)
+	await get_tree().create_timer(1.7).timeout
+	tween = create_tween()
+	tween.tween_property($LineObject, "modulate", Color(0.4, 0, 0, 1), 1.6).set_trans(Tween.TRANS_LINEAR)
+	await get_tree().create_timer(3.5).timeout
+	pulseLines()
