@@ -3,30 +3,32 @@
 [ext_resource type="Script" path="res://Player.gd" id="1_pb76f"]
 [ext_resource type="Texture2D" uid="uid://ba2vdnscmq6cj" path="res://icon.svg" id="2_i7nb4"]
 [ext_resource type="Texture2D" uid="uid://djldn114xblto" path="res://light.png" id="3_uxni6"]
-[ext_resource type="Texture2D" uid="uid://ce76jcx5nlrgd" path="res://white.png" id="4_atyy1"]
+[ext_resource type="Texture2D" uid="uid://idbylid3q4oo" path="res://circle.png" id="4_vkinr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7jywd"]
-size = Vector2(26, 26)
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_pb76f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_7jywd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.15, 0.15)
 texture = ExtResource("2_i7nb4")
 
 [node name="Flashlight" type="PointLight2D" parent="."]
-scale = Vector2(0.185714, 0.151429)
+scale = Vector2(0.4, 0.4)
+blend_mode = 2
 shadow_enabled = true
 texture = ExtResource("3_uxni6")
-texture_scale = 1.6
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
 
 [node name="PlayerLight" type="PointLight2D" parent="."]
-position = Vector2(4.76837e-07, -1)
-scale = Vector2(1.4, 1.1)
-energy = 0.54
-blend_mode = 2
-texture = ExtResource("4_atyy1")
+position = Vector2(3.8147e-06, 0)
+scale = Vector2(0.21125, 0.188845)
+shadow_enabled = true
+texture = ExtResource("4_vkinr")

@@ -1,5 +1,93 @@
-extends Node2D
+extends TileMap
 
+@export var MAZE_WIDTH = 35
+@export var MAZE_HEIGHT = 25
+var WALL_TILE = Vector2(0, 2)
+var FLOOR_TILE = Vector2(0, 0)
+var EMPTY_TILE = Vector2(-1, -1)
+var WALL_SOURCE_ID = 0
+
+func _ready():
+	for x in range(1, MAZE_WIDTH, 2):
+		for y in range(MAZE_HEIGHT):
+			set_cell(0, Vector2(x, y), WALL_SOURCE_ID, WALL_TILE)
+	for y in range(1, MAZE_HEIGHT, 2):
+		for x in range(MAZE_WIDTH):
+			set_cell(0, Vector2(x, y), WALL_SOURCE_ID, WALL_TILE)
+	
+	for x in range(MAZE_WIDTH):
+		set_cell(0, Vector2(x, -1), WALL_SOURCE_ID, WALL_TILE)
+		set_cell(0, Vector2(x, MAZE_HEIGHT), WALL_SOURCE_ID, WALL_TILE)
+
+		set_cell(0, Vector2(x, -2), WALL_SOURCE_ID, WALL_TILE)
+		set_cell(0, Vector2(x, MAZE_HEIGHT+1), WALL_SOURCE_ID, WALL_TILE)
+	for y in range(MAZE_HEIGHT):
+		set_cell(0, Vector2(-1, y), WALL_SOURCE_ID, WALL_TILE)
+		set_cell(0, Vector2(MAZE_WIDTH, y), WALL_SOURCE_ID, WALL_TILE)
+
+		set_cell(0, Vector2(-2, y), WALL_SOURCE_ID, WALL_TILE)
+		set_cell(0, Vector2(MAZE_WIDTH+1, y), WALL_SOURCE_ID, WALL_TILE)
+	var tileStack = [Vector2(0, 0)]
+	while(len(tileStack) > 0):
+		var tile = tileStack[-1]
+		set_cell(0, tile, 1, FLOOR_TILE)
+		var neighbours = getNeighbours(tile)#order is RIGHT, BOTTOM, LEFT, TOP
+		while(len(neighbours) > 0):
+			var neighbour = neighbours.pick_random()
+			if(Vector2(get_cell_atlas_coords(0, neighbour)) == EMPTY_TILE):
+				var x = (tile.x+neighbour.x)/2
+				var y = (tile.y+neighbour.y)/2
+				set_cell(0, Vector2(x, y), 1, FLOOR_TILE)
+				tileStack.append(neighbour)
+				break
+			neighbours.erase(neighbour)
+		if(len(neighbours) == 0):
+			tileStack.erase(tile)
+	convertWalls()
+
+func getNeighbours(coords : Vector2):
+	var neighbours = []
+	neighbours.append(Vector2(coords.x+2, coords.y))
+	neighbours.append(Vector2(coords.x, coords.y+2))
+	neighbours.append(Vector2(coords.x-2, coords.y))
+	neighbours.append(Vector2(coords.x, coords.y-2))
+	return neighbours
+
+func convertWalls():#converts the walls from the full sized boxes to the thin version
+	for x in range(MAZE_WIDTH):
+		for y in range(MAZE_HEIGHT):
+			if(get_cell_source_id(0, Vector2(x, y)) == WALL_SOURCE_ID):
+				var topWall = get_cell_source_id(0, Vector2(x, y-1)) == WALL_SOURCE_ID
+				var bottomWall = get_cell_source_id(0, Vector2(x, y+1)) == WALL_SOURCE_ID
+				var leftWall = get_cell_source_id(0, Vector2(x-1, y)) == WALL_SOURCE_ID
+				var rightWall = get_cell_source_id(0, Vector2(x+1, y)) == WALL_SOURCE_ID
+				if(bottomWall and leftWall and rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(3, 0))
+				elif(topWall and leftWall and rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(4, 0))
+				elif(leftWall and topWall and bottomWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(3, 1))
+				elif(topWall and bottomWall and rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(4, 1))
+				elif(topWall and bottomWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 0))
+				elif(leftWall and rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 1))
+				elif(bottomWall and rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(1, 0))
+				elif(topWall and rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(1, 1))
+				elif(leftWall and bottomWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(2, 0))
+				elif(leftWall and topWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(2, 1))
+				elif(leftWall or rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 1))
+				elif(topWall or bottomWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 0))
+				
+
+"""
 class Tile:
 	var x
 	var y
@@ -21,20 +109,20 @@ class Tile:
 func _ready():
 	var tiles = []
 	var index = 0
-	for y in range(20, 600, 40):
-		for x in range(20, 800, 40):
-			var rightWall = !x == 780
-			var bottomWall = !y == 580
+	for y in range(15):
+		for x in range(20):
+			var rightWall = !x == 19
+			var bottomWall = !y == 14
 			tiles.append(Tile.new(x, y, index, rightWall, bottomWall))
 			index += 1
 	for tile in tiles:
-		if(tile.y != 20):
+		if(tile.y != 0):
 			tile.topNeighbour = tiles[tile.index-20]
-		if(tile.y != 580):
+		if(tile.y != 14):
 			tile.bottomNeighbour = tiles[tile.index+20]
-		if(tile.x != 20):
+		if(tile.x != 0):
 			tile.leftNeighbour = tiles[tile.index-1]
-		if(tile.x != 780):
+		if(tile.x != 19):
 			tile.rightNeighbour = tiles[tile.index+1]
 
 	var visitedTiles = [tiles[0]]
@@ -128,3 +216,4 @@ func pulseLines():
 	tween.tween_property($LineObject, "modulate", Color(0.4, 0, 0, 1), 1.6).set_trans(Tween.TRANS_LINEAR)
 	await get_tree().create_timer(3.5).timeout
 	pulseLines()
+"""
