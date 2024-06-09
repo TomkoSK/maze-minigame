@@ -15,7 +15,7 @@ func _ready():
 		for x in range(MAZE_WIDTH):
 			set_cell(0, Vector2(x, y), WALL_SOURCE_ID, WALL_TILE)
 	
-	for x in range(MAZE_WIDTH):
+	for x in range(-2,MAZE_WIDTH+2):
 		set_cell(0, Vector2(x, -1), WALL_SOURCE_ID, WALL_TILE)
 		set_cell(0, Vector2(x, MAZE_HEIGHT), WALL_SOURCE_ID, WALL_TILE)
 
@@ -53,15 +53,17 @@ func getNeighbours(coords : Vector2):
 	neighbours.append(Vector2(coords.x, coords.y-2))
 	return neighbours
 
-func convertWalls():#converts the walls from the full sized boxes to the thin version
-	for x in range(MAZE_WIDTH):
-		for y in range(MAZE_HEIGHT):
+func convertWalls():#converts the wallrom the full sized boxes to the thin version
+	for x in range(-1, MAZE_WIDTH+1):
+		for y in range(-1, MAZE_HEIGHT+1):
 			if(get_cell_source_id(0, Vector2(x, y)) == WALL_SOURCE_ID):
 				var topWall = get_cell_source_id(0, Vector2(x, y-1)) == WALL_SOURCE_ID
 				var bottomWall = get_cell_source_id(0, Vector2(x, y+1)) == WALL_SOURCE_ID
 				var leftWall = get_cell_source_id(0, Vector2(x-1, y)) == WALL_SOURCE_ID
 				var rightWall = get_cell_source_id(0, Vector2(x+1, y)) == WALL_SOURCE_ID
-				if(bottomWall and leftWall and rightWall):
+				if(bottomWall and leftWall and topWall and rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 3))
+				elif(bottomWall and leftWall and rightWall):
 					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(3, 0))
 				elif(topWall and leftWall and rightWall):
 					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(4, 0))
@@ -81,10 +83,14 @@ func convertWalls():#converts the walls from the full sized boxes to the thin ve
 					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(2, 0))
 				elif(leftWall and topWall):
 					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(2, 1))
-				elif(leftWall or rightWall):
-					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 1))
-				elif(topWall or bottomWall):
-					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 0))
+				elif(rightWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(1, 2))
+				elif(leftWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(2, 2))
+				elif(topWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(3, 2))
+				elif(bottomWall):
+					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(4, 2))
 				
 
 """

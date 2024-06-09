@@ -1,18 +1,28 @@
-[gd_scene load_steps=20 format=3 uid="uid://do4gjc6blpi8v"]
+[gd_scene load_steps=31 format=3 uid="uid://do4gjc6blpi8v"]
 
-[ext_resource type="Script" path="res://MazeManager.gd" id="1_mrxi8"]
-[ext_resource type="PackedScene" uid="uid://djfyvo87iv3jf" path="res://Player.tscn" id="1_y7pjd"]
-[ext_resource type="Texture2D" uid="uid://50qtjxo1jvgh" path="res://tileset.png" id="2_lhrdw"]
-[ext_resource type="Texture2D" uid="uid://cspydg8dxv3gg" path="res://walls.png" id="3_67cd7"]
-[ext_resource type="Texture2D" uid="uid://ce76jcx5nlrgd" path="res://white.png" id="3_fjeeh"]
+[ext_resource type="PackedScene" uid="uid://djfyvo87iv3jf" path="res://Scenes/Player.tscn" id="1_ag412"]
+[ext_resource type="Texture2D" uid="uid://ce76jcx5nlrgd" path="res://white.png" id="2_eiaci"]
+[ext_resource type="Texture2D" uid="uid://cspydg8dxv3gg" path="res://walls.png" id="3_o24my"]
+[ext_resource type="Texture2D" uid="uid://50qtjxo1jvgh" path="res://tileset.png" id="4_45m5v"]
+[ext_resource type="Script" path="res://Scripts/MazeManager.gd" id="5_hr54a"]
+[ext_resource type="PackedScene" uid="uid://dayha74lfgw5e" path="res://Scenes/Monster.tscn" id="6_0d36j"]
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_uxn13"]
-polygon = PackedVector2Array(-1, -20, 1, -20, 1, 20, -1, 20)
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_r70hx"]
+source_geometry_group_name = &"navigation_polygon_source_group"
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_gnlcd"]
+polygon = PackedVector2Array(-1, -20, 1, -20, 1, 20, -1, 20, -1, -2)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_svpc5"]
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_u771t"]
 polygon = PackedVector2Array(20, -1, 20, 1, -20, 1, -20, -1)
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_bqt5f"]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_j16hm"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5uvdx"]
+polygon = PackedVector2Array(-1, 20, 1, 20, 1, 1, 20, 1, 20, -1, 1, -1, 1, -20, -1, -20, -1, -1, -20, -1, -20, 1, -1, 1)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_33s0u"]
 polygon = PackedVector2Array(-1, 20, 1, 20, 1, 1, 20, 1, 20, -1, -1, -1)
@@ -20,11 +30,17 @@ polygon = PackedVector2Array(-1, 20, 1, 20, 1, 1, 20, 1, 20, -1, -1, -1)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_axyuf"]
 polygon = PackedVector2Array(20, 1, 20, -1, 1, -1, 1, -20, -1, -20, -1, 1)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_t2o5a"]
+polygon = PackedVector2Array(20, -1, 20, 1, -16, 1, -16, -1)
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fnome"]
 polygon = PackedVector2Array(1, 20, -1, 20, -1, 1, -20, 1, -20, -1, 1, -1)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_p3bin"]
 polygon = PackedVector2Array(1, -20, -1, -20, -1, -1, -20, -1, -20, 1, 1, 1)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_gai20"]
+polygon = PackedVector2Array(-20, -1, -20, 1, 16, 1, 16, -1)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_l7opo"]
 polygon = PackedVector2Array(-20, -1, 20, -1, 20, 1, 1, 1, 1, 20, -1, 20, -1, 1, -20, 1)
@@ -32,26 +48,34 @@ polygon = PackedVector2Array(-20, -1, 20, -1, 20, 1, 1, 1, 1, 20, -1, 20, -1, 1,
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_c637b"]
 polygon = PackedVector2Array(1, 20, 1, -20, -1, -20, -1, -1, -20, -1, -20, 1, -1, 1, -1, 20)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pca2n"]
+polygon = PackedVector2Array(1, -20, -1, -20, -1, 16, 1, 16)
+
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_sg3yt"]
 polygon = PackedVector2Array(-20, 1, 20, 1, 20, -1, 1, -1, 1, -20, -1, -20, -1, -1, -20, -1)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_4agq5"]
 polygon = PackedVector2Array(-1, 20, -1, -20, 1, -20, 1, -1, 20, -1, 20, 1, 1, 1, 1, 20)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pwtp4"]
+polygon = PackedVector2Array(1, -16, 1, 20, -1, 20, -1, -16)
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t4pw7"]
-texture = ExtResource("3_67cd7")
+texture = ExtResource("3_o24my")
 separation = Vector2i(1, 1)
 texture_region_size = Vector2i(40, 40)
 0:0/0 = 0
-0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_uxn13")
+0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_gnlcd")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, -20, 5, -20, 5, 20, -5, 20)
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_r70hx")
 0:1/0 = 0
 0:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_u771t")
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:1/0/physics_layer_0/angular_velocity = 0.0
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(20, -5, 20, 5, -20, 5, -20, -5)
+0:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_svpc5")
 1:1/0 = 0
 1:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_axyuf")
 1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -105,17 +129,60 @@ texture_region_size = Vector2i(40, 40)
 4:1/0/physics_layer_0/polygon_1/points = PackedVector2Array(5, 20, 5, 5, -5, 5, -5, 20)
 4:1/0/physics_layer_0/polygon_2/points = PackedVector2Array(5, -5, -5, -5, -5, -20, 5, -20)
 0:2/0 = 0
-0:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_bqt5f")
+0:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_j16hm")
 0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:2/0/physics_layer_0/angular_velocity = 0.0
 0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-20, -20, 20, -20, 20, 20, -20, 20)
+1:2/0 = 0
+1:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_t2o5a")
+1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:2/0/physics_layer_0/angular_velocity = 0.0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-20, -5, 20, -5, 20, 5, -20, 5)
+2:2/0 = 0
+2:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_gai20")
+2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:2/0/physics_layer_0/angular_velocity = 0.0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-20, -5, 20, -5, 20, 5, -20, 5)
+3:2/0 = 0
+3:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_pca2n")
+3:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:2/0/physics_layer_0/angular_velocity = 0.0
+3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(5, -20, 5, 20, -5, 20, -5, -20)
+4:2/0 = 0
+4:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_pwtp4")
+4:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+4:2/0/physics_layer_0/angular_velocity = 0.0
+4:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(5, -20, 5, 20, -5, 20, -5, -20)
+0:3/0 = 0
+0:3/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_5uvdx")
+0:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:3/0/physics_layer_0/angular_velocity = 0.0
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-20, -5, -5, -5, -5, -20, 5, -20, 5, -5, 20, -5, 20, 5, 5, 5, 5, 20, -5, 20, -5, 5, -20, 5)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_3ebut"]
+vertices = PackedVector2Array(20, 20, -20, 20, -20, -20, 20, -20)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-20, -20, 20, -20, 20, 20, -20, 20)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+agent_radius = 0.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_b2cl0"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ow1cx"]
+vertices = PackedVector2Array(20, 20, -20, 20, -20, -20, 20, -20)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-20, -20, 20, -20, 20, 20, -20, 20)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+agent_radius = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ohspt"]
-texture = ExtResource("2_lhrdw")
+texture = ExtResource("4_45m5v")
 texture_region_size = Vector2i(40, 40)
 0:0/0 = 0
+0:0/0/occlusion_layer_1/polygon = SubResource("OccluderPolygon2D_b2cl0")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_3ebut")
 1:0/0 = 0
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
@@ -126,6 +193,7 @@ texture_region_size = Vector2i(40, 40)
 1:1/0 = 0
 1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ow1cx")
 0:1/0 = 0
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:1/0/physics_layer_0/angular_velocity = 0.0
@@ -133,14 +201,17 @@ texture_region_size = Vector2i(40, 40)
 [sub_resource type="TileSet" id="TileSet_o2uf7"]
 tile_size = Vector2i(40, 40)
 occlusion_layer_0/light_mask = 1
+occlusion_layer_1/light_mask = 2
 physics_layer_0/collision_layer = 1
+navigation_layer_0/layers = 1
 sources/1 = SubResource("TileSetAtlasSource_ohspt")
 sources/0 = SubResource("TileSetAtlasSource_t4pw7")
 
 [node name="Main" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_y7pjd")]
-position = Vector2(15, 15)
+[node name="Player" parent="." instance=ExtResource("1_ag412")]
+position = Vector2(52, 31)
+scale = Vector2(0.984127, 1)
 motion_mode = 1
 SPEED = 300
 
@@ -150,12 +221,18 @@ self_modulate = Color(0, 0, 0, 1)
 z_index = -15
 position = Vector2(395, 332)
 scale = Vector2(26.825, 19.925)
-texture = ExtResource("3_fjeeh")
+texture = ExtResource("2_eiaci")
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Tilemap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_o2uf7")
 format = 2
-script = ExtResource("1_mrxi8")
+script = ExtResource("5_hr54a")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
+
+[node name="Monster" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_0d36j")]
+target = NodePath("../Player")
+WANDER_SPEED = 25.0
+RUN_SPEED = 100.0
+BLIND_CHASE_DURATION = 8.0
