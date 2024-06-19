@@ -20,25 +20,10 @@ func _process(delta):
 		velocity = Input.get_vector("left", "right", "up", "down")*SPEED
 	sprint=clamp(sprint, 0, 100)
 
-	var cursorPos = get_global_mouse_position()
-	$Flashlight.rotation = position.direction_to(cursorPos).angle()
-	$Flashlight.global_position = position.move_toward(cursorPos, 10)
-
 func _physics_process(_delta):
 	move_and_slide()
 
 func _input(event):
-	if(event is InputEventMouseButton):
-		if(event.button_index == 1 and event.is_pressed()):
-			var tween = create_tween()
-			tween.tween_property($Flashlight/Light, "scale", Vector2(1, 0.5), 0.2)
-			tween = create_tween()
-			tween.tween_property($Flashlight/Light, "energy", 3, 0.2)
-		if(event.button_index == 1 and !event.is_pressed()):
-			var tween = create_tween()
-			tween.tween_property($Flashlight/Light, "scale", Vector2(1, 1), 0.2)
-			tween = create_tween()
-			tween.tween_property($Flashlight/Light, "energy", 1, 0.1)
 	if(event.is_action_pressed("sprint")):
 		sprinting = true
 	if(event.is_action_released("sprint")):
