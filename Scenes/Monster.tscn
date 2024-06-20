@@ -7,6 +7,7 @@
 size = Vector2(26, 26)
 
 [node name="Monster" type="CharacterBody2D"]
+scale = Vector2(3, 3)
 script = ExtResource("1_ucpxo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
