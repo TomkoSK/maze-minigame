@@ -10,7 +10,6 @@ func _ready():
 
 
 func _process(delta):
-	print(player.velocity)
 	if(player.sprinting and player.sprint > 0):
 		shakeIntensity = 1.9
 		shakeFrequency = 0.0085
@@ -53,9 +52,9 @@ func _input(event):
 			var tween = create_tween()
 			tween.tween_property($Light, "scale", Vector2(1, 0.5), 0.2)
 			tween = create_tween()
-			tween.tween_property($Light, "energy", 4, 0.2)
+			tween.tween_property($Light, "energy", 4.2, 0.2)
 		if(event.button_index == 1 and !event.is_pressed()):
 			var tween = create_tween()
 			tween.tween_property($Light, "scale", Vector2(1, 1), 0.2)
 			tween = create_tween()
-			tween.tween_property($Light, "energy", 1.6, 0.2)
+			tween.tween_property($Light, "energy", 1.7, 0.2)

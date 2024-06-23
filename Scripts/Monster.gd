@@ -41,9 +41,9 @@ func _physics_process(_delta):
 func getPath():
 	if(mode == "wander"):
 		var rng = RandomNumberGenerator.new()
-		var x = rng.randi_range(0, 35)
+		var x = rng.randi_range(0, 25)
 		var y = rng.randi_range(0, 25)
-		$NavigationAgent2D.target_position = Vector2(x*40, y*40)
+		$NavigationAgent2D.target_position = Vector2(x*160, y*160)
 	if(mode == "chase"):
 		$NavigationAgent2D.target_position = target.position
 	if(mode == "chaseBlind"):
@@ -51,7 +51,7 @@ func getPath():
 			mode = "wander"
 			get_path()
 			return
-		if(position.distance_to($NavigationAgent2D.target_position) < 10):
+		if(position.distance_to($NavigationAgent2D.target_position) < 160):
 			if(startDirection == null):
 				getStartDirection()
 				print(startDirection)
@@ -63,19 +63,19 @@ func getPath():
 				match chaseDirection:
 					"up":				
 						if(tilemap.get_cell_source_id(0, Vector2(x, y-1)) != 0):
-							$NavigationAgent2D.target_position = Vector2(x*40+20, (y-1)*40+20)
+							$NavigationAgent2D.target_position = Vector2(x*160+80, (y-1)*160+80)
 							return
 					"down":				
 						if(tilemap.get_cell_source_id(0, Vector2(x, y+1)) != 0):
-							$NavigationAgent2D.target_position = Vector2(x*40+20, (y+1)*40+20)
+							$NavigationAgent2D.target_position = Vector2(x*160+80, (y+1)*160+80)
 							return
 					"left":				
 						if(tilemap.get_cell_source_id(0, Vector2(x-1, y)) != 0):
-							$NavigationAgent2D.target_position = Vector2((x-1)*40+20, y*40+20)
+							$NavigationAgent2D.target_position = Vector2((x-1)*160+80, y*160+80)
 							return
 					"right":				
 						if(tilemap.get_cell_source_id(0, Vector2(x+1, y)) != 0):
-							$NavigationAgent2D.target_position = Vector2((x+1)*40+20, y*40+20)
+							$NavigationAgent2D.target_position = Vector2((x+1)*160+80, y*160+80)
 							return
 		else:
 			return
@@ -137,11 +137,11 @@ func getDirection():
 		startDirection = false
 
 func getTilemapPosition():#help me
-	var x = int(position.x/40)
-	var y = int(position.y/40)
+	var x = int(position.x/160)
+	var y = int(position.y/160)
 	var tilemap = get_node("../Tilemap")
 	if(tilemap.get_cell_source_id(0, Vector2(x, y)) == 0):
-		if(position.x-x*40 < position.y-y*40):
+		if(position.x-x*160 < position.y-y*160):
 			x += 1 
 			if(tilemap.get_cell_source_id(0, Vector2(x, y)) == 0):
 				y += 1
@@ -164,19 +164,19 @@ func getStartDirection():
 	var smallestDistance = 1000000000
 	var tilemap = get_node("../Tilemap")
 	if(tilemap.get_cell_source_id(0, Vector2(x-1, y)) != 0):
-		if(Vector2((x-1)*40, y*40).distance_to(startPosition) < smallestDistance):
+		if(Vector2((x-1)*160, y*160).distance_to(startPosition) < smallestDistance):
 			closestDirection = "left"
-			smallestDistance = Vector2((x-1)*40, y*40).distance_to(startPosition)
+			smallestDistance = Vector2((x-1)*160, y*160).distance_to(startPosition)
 	if(tilemap.get_cell_source_id(0, Vector2(x+1, y)) != 0):
-		if(Vector2((x+1)*40, y*40).distance_to(startPosition) < smallestDistance):
+		if(Vector2((x+1)*160, y*160).distance_to(startPosition) < smallestDistance):
 			closestDirection = "right"
-			smallestDistance = Vector2((x+1)*40, y*40).distance_to(startPosition)
+			smallestDistance = Vector2((x+1)*160, y*160).distance_to(startPosition)
 	if(tilemap.get_cell_source_id(0, Vector2(x, y-1)) != 0):
-		if(Vector2(x*40, (y-1)*40).distance_to(startPosition) < smallestDistance):
+		if(Vector2(x*160, (y-1)*160).distance_to(startPosition) < smallestDistance):
 			closestDirection = "up"
-			smallestDistance = Vector2(x*40, (y-1)*40).distance_to(startPosition)
+			smallestDistance = Vector2(x*160, (y-1)*160).distance_to(startPosition)
 	if(tilemap.get_cell_source_id(0, Vector2(x, y+1)) != 0):
-		if(Vector2(x*40, (y+1)*40).distance_to(startPosition) < smallestDistance):
+		if(Vector2(x*160, (y+1)*160).distance_to(startPosition) < smallestDistance):
 			closestDirection = "down"
-			smallestDistance = Vector2(x*40, (y+1)*40).distance_to(startPosition)
+			smallestDistance = Vector2(x*160, (y+1)*160).distance_to(startPosition)
 	startDirection = closestDirection

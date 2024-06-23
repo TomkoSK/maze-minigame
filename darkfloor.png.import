@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djldn114xblto"
-path="res://.godot/imported/light.png-06e94102f0cce323cff7daad56cf3030.ctex"
+uid="uid://bm5exrypa4b80"
+path="res://.godot/imported/darkfloor.png-89c3767e6945828dd78d781650956166.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://light.png"
-dest_files=["res://.godot/imported/light.png-06e94102f0cce323cff7daad56cf3030.ctex"]
+source_file="res://darkfloor.png"
+dest_files=["res://.godot/imported/darkfloor.png-89c3767e6945828dd78d781650956166.ctex"]
 
 [params]
 

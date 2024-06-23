@@ -1,6 +1,6 @@
 extends TileMap
 
-@export var MAZE_WIDTH = 35
+@export var MAZE_WIDTH = 25
 @export var MAZE_HEIGHT = 25
 var WALL_TILE = Vector2(0, 2)
 var FLOOR_TILE = Vector2(0, 0)
@@ -8,6 +8,10 @@ var EMPTY_TILE = Vector2(-1, -1)
 var WALL_SOURCE_ID = 0
 
 func _ready():
+	$FloorSprite.scale = Vector2(MAZE_WIDTH*160/2000.0, MAZE_HEIGHT*160/2000.0)
+	var xThing = 2000/2*$FloorSprite.scale.x
+	$FloorSprite.position.x += xThing
+	$FloorSprite.position.y += 2000/2*$FloorSprite.scale.y
 	for x in range(1, MAZE_WIDTH, 2):
 		for y in range(MAZE_HEIGHT):
 			set_cell(0, Vector2(x, y), WALL_SOURCE_ID, WALL_TILE)

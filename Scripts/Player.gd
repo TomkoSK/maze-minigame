@@ -8,7 +8,6 @@ var sprinting = false
 var sprint = 100
 
 func _process(delta):
-	$SprintLabel.text = str(sprint)
 	if(sprinting):
 		sprint -= SPRINT_CONSUMPTION*delta
 	else:
