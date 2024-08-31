@@ -4,7 +4,11 @@ extends CharacterBody2D
 @export var WANDER_SPEED : float
 @export var RUN_SPEED : float
 @export var BLIND_CHASE_DURATION : float
+
+var speedMultiplier = 1.0#Changed by halo pieces when picked up, 1 by default
+
 var mode
+var stunned
 var blindTime
 var startDirection = null
 var chaseDirection = null
@@ -15,11 +19,18 @@ func _ready():
 	getPath()
 
 func _physics_process(_delta):
+	if(mode == "chase" and position.distance_to(target.position) < 85):#game over if monster catches player
+		get_tree().change_scene_to_file("res://Scenes/CatchEnding.tscn")
+		return
+		
 	var spaceState = get_world_2d().direct_space_state
 	var query = PhysicsRayQueryParameters2D.create(position, target.position)
 	var result = spaceState.intersect_ray(query)
-	if(result.collider == target and position.distance_to(target.position) < 600):
+	if(result and result.collider == target and position.distance_to(target.position) < 900):
 		startDirection = null
+		if(mode == "wander"):#the 2 second scream pause
+			mode = "chase"
+			stun(5)
 		mode = "chase"
 	elif(mode=="chase"):
 		mode = "chaseBlind"
@@ -27,22 +38,26 @@ func _physics_process(_delta):
 		oppositeDirection = null
 		chaseDirection = null
 
-	if(mode == "chase" or mode == "chaseBlind" or (mode == "wander" and position.distance_to($NavigationAgent2D.target_position) < 50)):
+	if(mode == "chase" or mode == "chaseBlind" or (mode == "wander" and position.distance_to($NavigationAgent2D.target_position) < 160+10)):
 		getPath()
 
 	var direction = $NavigationAgent2D.get_next_path_position()-position
 
 	if(mode == "wander"):
-		velocity = direction.normalized()*WANDER_SPEED
+		velocity = direction.normalized()*WANDER_SPEED*speedMultiplier
 	else:
-		velocity = direction.normalized()*RUN_SPEED
+		velocity = direction.normalized()*RUN_SPEED*speedMultiplier
+	
+	if(mode == "chase" or mode =="chaseBlind"):
+		if(not $StepSound.playing and not stunned):
+			$StepSound.play()
 	move_and_slide()
 
 func getPath():
 	if(mode == "wander"):
 		var rng = RandomNumberGenerator.new()
-		var x = rng.randi_range(0, 25)
-		var y = rng.randi_range(0, 25)
+		var x = rng.randi_range(0, 19)#MAZECHANGE
+		var y = rng.randi_range(0, 19)
 		$NavigationAgent2D.target_position = Vector2(x*160, y*160)
 	if(mode == "chase"):
 		$NavigationAgent2D.target_position = target.position
@@ -54,7 +69,6 @@ func getPath():
 		if(position.distance_to($NavigationAgent2D.target_position) < 160):
 			if(startDirection == null):
 				getStartDirection()
-				print(startDirection)
 			if(chaseDirection):
 				var pos = getTilemapPosition()
 				var x = pos[0]
@@ -180,3 +194,15 @@ func getStartDirection():
 			closestDirection = "down"
 			smallestDistance = Vector2(x*160, (y+1)*160).distance_to(startPosition)
 	startDirection = closestDirection
+
+func stun(duration):
+	stunned = true
+	$SightedEffect.play()
+	var tempWalkSpeed = WANDER_SPEED
+	var tempRunSpeed = RUN_SPEED
+	RUN_SPEED = 0
+	WANDER_SPEED = 0
+	await get_tree().create_timer(duration).timeout
+	RUN_SPEED = tempRunSpeed
+	WANDER_SPEED = tempWalkSpeed
+	stunned = false

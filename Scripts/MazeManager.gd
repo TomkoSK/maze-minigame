@@ -1,14 +1,18 @@
 extends TileMap
 
-@export var MAZE_WIDTH = 25
-@export var MAZE_HEIGHT = 25
+@export var MAZE_WIDTH = 19#IF YOU CHANGE THIS, YOU NEED TO CHANGE PLAYER.GD AND MONSTER.GD TOO!!!! (search for MAZECHANGE within files)
+@export var MAZE_HEIGHT = 19
 var WALL_TILE = Vector2(0, 2)
 var FLOOR_TILE = Vector2(0, 0)
 var EMPTY_TILE = Vector2(-1, -1)
+var TEST_TILE = Vector2(1, 1)
+var EXIT_TILES = [Vector2i(3, 0), Vector2i(4, 0), Vector2i(3, 1), Vector2i(4, 1)]
 var WALL_SOURCE_ID = 0
 
+var exitPosition : Vector2
+
 func _ready():
-	$FloorSprite.scale = Vector2(MAZE_WIDTH*160/2000.0, MAZE_HEIGHT*160/2000.0)
+	$FloorSprite.scale = Vector2((MAZE_WIDTH+1)*160/2000.0, (MAZE_HEIGHT+1)*160/2000.0)
 	var xThing = 2000/2*$FloorSprite.scale.x
 	$FloorSprite.position.x += xThing
 	$FloorSprite.position.y += 2000/2*$FloorSprite.scale.y
@@ -45,8 +49,59 @@ func _ready():
 				tileStack.append(neighbour)
 				break
 			neighbours.erase(neighbour)
-		if(len(neighbours) == 0):
+		if(len(neighbours) == 0):#This means tile is now a dead end
 			tileStack.erase(tile)
+	
+	var exitSide = [0, 1].pick_random()
+	var exitX
+	var exitY
+	if(exitSide == 0):
+		var rng = RandomNumberGenerator.new()
+		exitX = rng.randi_range(0, MAZE_WIDTH-1)
+		while(exitX % 2 != 0):#even tiles are guaranteed to be floor tiles, so this makes it so that the exit is not right besides a wall
+			exitX = rng.randi_range(0, MAZE_WIDTH-1)
+		exitY = [-1, MAZE_HEIGHT].pick_random()
+		if(exitY == MAZE_HEIGHT and exitX < 6):#So that the dark hallway and the exit aren't next to each other
+			exitX = 12
+	if(exitSide == 1):
+		var rng = RandomNumberGenerator.new()
+		exitX = MAZE_WIDTH
+		exitY = rng.randi_range(0, MAZE_HEIGHT-1)
+		while(exitY % 2 != 0):#even tiles are guaranteed to be floor tiles, so this makes it so that the exit is not right besides a wall
+			exitY = rng.randi_range(0, MAZE_HEIGHT-1)
+	
+	exitPosition = Vector2(exitX, exitY)
+	if(exitY == -1):
+		set_cell(0, Vector2(exitX, exitY), 1, Vector2(3, 0))
+		set_cell(0, Vector2(exitX, exitY-1), 1, EMPTY_TILE)
+	elif(exitY == MAZE_HEIGHT):
+		set_cell(0, Vector2(exitX, exitY), 1, Vector2(4, 0))
+		set_cell(0, Vector2(exitX, exitY+1), 1, EMPTY_TILE)
+	elif(exitX == -1):
+		set_cell(0, Vector2(exitX, exitY), 1, Vector2(3, 1))
+		set_cell(0, Vector2(exitX-1, exitY), 1, EMPTY_TILE)
+	elif(exitX == MAZE_WIDTH):
+		set_cell(0, Vector2(exitX, exitY), 1, Vector2(4, 1))
+		set_cell(0, Vector2(exitX+1, exitY), 1, EMPTY_TILE)
+
+	$ExitHitbox.global_position = Vector2(exitX*160+80, exitY*160+80)
+	
+	set_cell(0, Vector2(-1, 18), 1, EMPTY_TILE)
+	set_cell(0, Vector2(-2, 18), 1, EMPTY_TILE)
+	"""
+	for i in range(-1, -9, -1):
+		set_cell(0, Vector2(i, 17), WALL_SOURCE_ID, WALL_TILE)
+		set_cell(0, Vector2(i, 19), WALL_SOURCE_ID, WALL_TILE)
+	"""
+
+	var haloPlacements = getHaloPlacements()
+	for i in range(3):
+		var sprite = $Halos.get_child(i)
+		#var tile = haloPlacements.pick_random()ADD BACK LATER
+		var tile = Vector2(0, i)
+		haloPlacements.erase(tile)
+		sprite.global_position = Vector2(tile.x*160+80, tile.y*160+80)
+
 	convertWalls()
 
 func getNeighbours(coords : Vector2):
@@ -57,14 +112,22 @@ func getNeighbours(coords : Vector2):
 	neighbours.append(Vector2(coords.x, coords.y-2))
 	return neighbours
 
-func convertWalls():#converts the wallrom the full sized boxes to the thin version
-	for x in range(-1, MAZE_WIDTH+1):
-		for y in range(-1, MAZE_HEIGHT+1):
-			if(get_cell_source_id(0, Vector2(x, y)) == WALL_SOURCE_ID):
-				var topWall = get_cell_source_id(0, Vector2(x, y-1)) == WALL_SOURCE_ID
-				var bottomWall = get_cell_source_id(0, Vector2(x, y+1)) == WALL_SOURCE_ID
-				var leftWall = get_cell_source_id(0, Vector2(x-1, y)) == WALL_SOURCE_ID
-				var rightWall = get_cell_source_id(0, Vector2(x+1, y)) == WALL_SOURCE_ID
+func getImmediateNeighbours(coords : Vector2):#:3
+	var neighbours = []
+	neighbours.append(Vector2(coords.x+1, coords.y))
+	neighbours.append(Vector2(coords.x, coords.y+1))
+	neighbours.append(Vector2(coords.x-1, coords.y))
+	neighbours.append(Vector2(coords.x, coords.y-1))
+	return neighbours
+
+func convertWalls():#converts the walls from the full sized boxes to the thin version
+	for x in range(-11, MAZE_WIDTH+11):#11 because dark hallway got added too
+		for y in range(-11, MAZE_HEIGHT+11):
+			if(get_cell_source_id(0, Vector2(x, y)) == WALL_SOURCE_ID):#NOTE: The exit tile check does not care for source ID, might break something later!!
+				var topWall = get_cell_source_id(0, Vector2(x, y-1)) == WALL_SOURCE_ID or get_cell_atlas_coords(0, Vector2(x, y-1)) in EXIT_TILES
+				var bottomWall = get_cell_source_id(0, Vector2(x, y+1)) == WALL_SOURCE_ID or get_cell_atlas_coords(0, Vector2(x, y+1)) in EXIT_TILES
+				var leftWall = get_cell_source_id(0, Vector2(x-1, y)) == WALL_SOURCE_ID or get_cell_atlas_coords(0, Vector2(x-1, y)) in EXIT_TILES
+				var rightWall = get_cell_source_id(0, Vector2(x+1, y)) == WALL_SOURCE_ID or get_cell_atlas_coords(0, Vector2(x+1, y)) in EXIT_TILES
 				if(bottomWall and leftWall and topWall and rightWall):
 					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(0, 3))
 				elif(bottomWall and leftWall and rightWall):
@@ -96,6 +159,21 @@ func convertWalls():#converts the wallrom the full sized boxes to the thin versi
 				elif(bottomWall):
 					set_cell(0, Vector2(x, y), WALL_SOURCE_ID, Vector2(4, 2))
 				
+func getHaloPlacements():
+	var placements = []
+	for x in range(MAZE_WIDTH):
+		for y in range(MAZE_HEIGHT):
+			if(Vector2(get_cell_atlas_coords(0, Vector2(x, y))) == FLOOR_TILE):
+				var wallCount = 0
+				for neighbour in getImmediateNeighbours(Vector2(x, y)):
+					if(Vector2(get_cell_atlas_coords(0, neighbour)) == WALL_TILE):
+						wallCount += 1
+				if(wallCount == 3):
+					placements.append(Vector2(x, y))
+	return placements
+
+func unlockExit():
+	set_cell(0, exitPosition, 1, FLOOR_TILE)
 
 """
 class Tile:

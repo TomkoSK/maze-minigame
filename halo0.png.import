@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dk4byof8fo4ml"
-path="res://.godot/imported/newtiles.png-b614539d1eec326d5d635b52942ec9c1.ctex"
+uid="uid://dwlbbijjjo0al"
+path="res://.godot/imported/halo0.png-ef8133694a2695051fde30de0bb79e4a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://newtiles.png"
-dest_files=["res://.godot/imported/newtiles.png-b614539d1eec326d5d635b52942ec9c1.ctex"]
+source_file="res://halo0.png"
+dest_files=["res://.godot/imported/halo0.png-ef8133694a2695051fde30de0bb79e4a.ctex"]
 
 [params]
 

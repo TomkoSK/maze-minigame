@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dayha74lfgw5e"]
+[gd_scene load_steps=6 format=3 uid="uid://dayha74lfgw5e"]
 
 [ext_resource type="Texture2D" uid="uid://ba2vdnscmq6cj" path="res://icon.svg" id="1_1e466"]
 [ext_resource type="Script" path="res://Scripts/Monster.gd" id="1_ucpxo"]
+[ext_resource type="AudioStream" uid="uid://clo707msnl1jk" path="res://SoundEffects/scream.mp3" id="3_lc1ur"]
+[ext_resource type="AudioStream" uid="uid://buioq4jsgw2ot" path="res://SoundEffects/steps(1).mp3" id="4_xehfo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_abb2j"]
 size = Vector2(26, 26)
@@ -9,9 +11,9 @@ size = Vector2(26, 26)
 [node name="Monster" type="CharacterBody2D"]
 scale = Vector2(3, 3)
 script = ExtResource("1_ucpxo")
-WANDER_SPEED = 150.0
+WANDER_SPEED = 200.0
 RUN_SPEED = 350.0
-BLIND_CHASE_DURATION = 8.0
+BLIND_CHASE_DURATION = 9.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_abb2j")
@@ -24,6 +26,16 @@ texture = ExtResource("1_1e466")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 5.0
 target_desired_distance = 0.1
-navigation_layers = 2
 path_postprocessing = 1
-debug_enabled = true
+
+[node name="SightedEffect" type="AudioStreamPlayer2D" parent="."]
+scale = Vector2(0.988331, 1.1663)
+stream = ExtResource("3_lc1ur")
+max_distance = 1300.0
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="."]
+scale = Vector2(0.996682, 1.01438)
+stream = ExtResource("4_xehfo")
+volume_db = 5.0
+max_distance = 1300.0
+attenuation = 2.0

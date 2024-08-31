@@ -5,11 +5,16 @@ var shakeIntensity = 3
 var shakeFrequency = 0.007
 var offsetGlobal = Vector2.ZERO
 
+var flashlightEnergy = 1.7
+var flashlightEnergyMultiplier = 1#changed by Player.gd
+
 func _ready():
 	player = get_parent()
 
 
 func _process(delta):
+	$Light.energy = flashlightEnergy*flashlightEnergyMultiplier
+
 	if(player.sprinting and player.sprint > 0):
 		shakeIntensity = 1.9
 		shakeFrequency = 0.0085
@@ -52,9 +57,9 @@ func _input(event):
 			var tween = create_tween()
 			tween.tween_property($Light, "scale", Vector2(1, 0.5), 0.2)
 			tween = create_tween()
-			tween.tween_property($Light, "energy", 4.2, 0.2)
+			tween.tween_property(self, "flashlightEnergy", 4.2, 0.2)
 		if(event.button_index == 1 and !event.is_pressed()):
 			var tween = create_tween()
 			tween.tween_property($Light, "scale", Vector2(1, 1), 0.2)
 			tween = create_tween()
-			tween.tween_property($Light, "energy", 1.7, 0.2)
+			tween.tween_property(self, "flashlightEnergy", 1.7, 0.2)

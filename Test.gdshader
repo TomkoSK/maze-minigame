@@ -2,6 +2,7 @@ shader_type canvas_item;
 
 uniform float change_frequency = 0.25;
 uniform float grain_size = 0.006;
+uniform float grain_opacity = 0.025;
 
 float random (vec2 uv) {
 	float time = 0.0;
@@ -13,7 +14,7 @@ float random (vec2 uv) {
 }
 
 void fragment() {
-	COLOR = vec4(1, 1, 1, 0.025);
+	COLOR = vec4(1, 1, 1, grain_opacity);
 	vec2 uv = vec2(0, 0);
 	while(uv.x < UV.x){
 		uv.x += max(0.00002, grain_size);
