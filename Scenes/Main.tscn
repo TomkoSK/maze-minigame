@@ -6,13 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://50qtjxo1jvgh" path="res://tileset.png" id="4_45m5v"]
 [ext_resource type="Texture2D" uid="uid://b878mfsanqjso" path="res://floorfinal.png" id="5_emb3c"]
 [ext_resource type="Script" path="res://Scripts/MazeManager.gd" id="5_hr54a"]
-[ext_resource type="PackedScene" uid="uid://dayha74lfgw5e" path="res://Scenes/Monster.tscn" id="6_0d36j"]
 [ext_resource type="PackedScene" uid="uid://cx2x1mlnwjyrm" path="res://Scenes/Halo.tscn" id="7_2w6p7"]
 [ext_resource type="Shader" path="res://Test.gdshader" id="7_b6gjh"]
 [ext_resource type="Texture2D" uid="uid://ba2vdnscmq6cj" path="res://icon.svg" id="7_fwtb4"]
 [ext_resource type="Texture2D" uid="uid://bywup7iibimsx" path="res://halo1.png" id="9_w3wcd"]
 [ext_resource type="Script" path="res://Scripts/Exit.gd" id="10_cxyef"]
 [ext_resource type="Texture2D" uid="uid://bet5xgc0h2inf" path="res://halo2.png" id="10_sv331"]
+[ext_resource type="PackedScene" uid="uid://dn8uqxm42ngso" path="res://Scenes/TestMonster.tscn" id="11_tdcqe"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_r70hx"]
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -68,7 +68,7 @@ polygon = PackedVector2Array(-4, -80, 4, -80, 4, -4, 80, -4, 80, 4, 4, 4, 4, 80,
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_uiibv"]
 polygon = PackedVector2Array(4, 80, -4, 80, -4, -64, 4, -64)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t4pw7"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_85h3x"]
 texture = ExtResource("3_o24my")
 separation = Vector2i(4, 4)
 texture_region_size = Vector2i(160, 160)
@@ -149,7 +149,7 @@ polygon = PackedVector2Array(80, -4, 80, 4, -80, 4, -80, -4)
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_iw3k0"]
 polygon = PackedVector2Array(-4, -80, 4, -80, 4, 80, -4, 80)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ohspt"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4ka7n"]
 texture = ExtResource("4_45m5v")
 texture_region_size = Vector2i(160, 160)
 0:0/0 = 0
@@ -177,8 +177,8 @@ tile_size = Vector2i(160, 160)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 1
 navigation_layer_0/layers = 1
-sources/1 = SubResource("TileSetAtlasSource_ohspt")
-sources/0 = SubResource("TileSetAtlasSource_t4pw7")
+sources/1 = SubResource("TileSetAtlasSource_4ka7n")
+sources/0 = SubResource("TileSetAtlasSource_85h3x")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jn2d2"]
 size = Vector2(160, 155)
@@ -195,6 +195,7 @@ size = Vector2(40, 40)
 [node name="Main" type="Node2D"]
 
 [node name="Player" parent="." node_paths=PackedStringArray("monster") instance=ExtResource("1_ag412")]
+position = Vector2(80, 80)
 monster = NodePath("../Monster")
 
 [node name="Tilemap" type="TileMap" parent="."]
@@ -245,12 +246,12 @@ shape = SubResource("RectangleShape2D_jn2d2")
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
 
-[node name="Monster" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_0d36j")]
-position = Vector2(0, 160)
-motion_mode = 1
+[node name="Monster" parent="." node_paths=PackedStringArray("target") instance=ExtResource("11_tdcqe")]
+position = Vector2(1680, 1680)
 target = NodePath("../Player")
 WANDER_SPEED = 130.0
 RUN_SPEED = 280.0
+BLIND_CHASE_DURATION = 6.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 15

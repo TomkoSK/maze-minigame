@@ -22,6 +22,7 @@ var afkDarkenTime = 20000.0#the time during which the screen completely darkens 
 var darkening = false
 var monsterInFlashlightHitbox = false
 var lastStunnedAt = -MONSTER_STUN_COOLDOWN#so that you can stun immediately after game starts
+var haloComplete = false
 
 var keys = {"halo0.png" : false, "halo1.png" : false, "halo2.png" : false}#changed by HaloScript.gd when player acquires pieces of halo
 
@@ -48,7 +49,6 @@ func _process(delta):
 	if(inDarkHallway):
 		if(velocity.x < 0 and (keys["halo0.png"] == false or keys["halo1.png"] == false or keys["halo2.png"] == false)):
 			velocity.x = remap(position.x, -800, 0, 0, velocity.x)
-		print(velocity.x)
 			#if(position.x < -700 and velocity.x < 0):#hard limit so that player cant truly get through the hallway without halo
 				#velocity.x = 0.01#its 0.01 so that footstep sounds are still active
 		$Flashlight.flashlightEnergyMultiplier = -75/min(position.x, -75)
@@ -60,7 +60,7 @@ func _process(delta):
 
 	if(monsterInFlashlightHitbox and $Flashlight/Light.energy >= 4.1 and Time.get_ticks_msec()-lastStunnedAt >= MONSTER_STUN_COOLDOWN and monster.RUN_SPEED > 0):
 		lastStunnedAt = Time.get_ticks_msec()
-		monster.stun(2)
+		monster.stun(2, true)
 
 	if(Time.get_ticks_msec()-lastInputAt > afkLength and not inDarkHallway):
 		darkening = true
@@ -155,17 +155,8 @@ func pickUpHalo(halo):#called by HaloScript.gd
 		tween.tween_property($Halo1, "modulate", Color(1, 1, 1, 0), 1)
 		tween = create_tween()
 		tween.tween_property($Halo2, "modulate", Color(1, 1, 1, 0), 1)
-
-func setHaloLights(state : bool):
-	if(state == true):
-		$Halo0/PointLight2D.energy = 4
-		$Halo1/PointLight2D.energy = 4
-		$Halo2/PointLight2D.energy = 4
-	if(state == false):
-		$Halo0/PointLight2D.energy = 0
-		$Halo1/PointLight2D.energy = 0
-		$Halo2/PointLight2D.energy = 0
-
+		haloComplete = true
+		$HaloLight.show()
 
 func _on_area_2d_body_exited(body:Node2D):
 	if(body == monster):

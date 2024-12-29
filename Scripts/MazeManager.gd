@@ -97,8 +97,7 @@ func _ready():
 	var haloPlacements = getHaloPlacements()
 	for i in range(3):
 		var sprite = $Halos.get_child(i)
-		#var tile = haloPlacements.pick_random()ADD BACK LATER
-		var tile = Vector2(0, i)
+		var tile = haloPlacements.pick_random()
 		haloPlacements.erase(tile)
 		sprite.global_position = Vector2(tile.x*160+80, tile.y*160+80)
 

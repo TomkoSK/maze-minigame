@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://dn8uqxm42ngso"]
+
+[ext_resource type="Script" path="res://Scripts/TestMonstering.gd" id="1_ggo45"]
+[ext_resource type="Texture2D" uid="uid://ba2vdnscmq6cj" path="res://icon.svg" id="2_a86et"]
+[ext_resource type="AudioStream" uid="uid://clo707msnl1jk" path="res://SoundEffects/scream.mp3" id="3_b1dnw"]
+[ext_resource type="AudioStream" uid="uid://buioq4jsgw2ot" path="res://SoundEffects/steps(1).mp3" id="4_45w83"]
+[ext_resource type="PackedScene" uid="uid://5ms1rvg07ydp" path="res://Scenes/TestLeg.tscn" id="5_60ttm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_abb2j"]
+size = Vector2(79, 78)
+
+[node name="TestMonster" type="CharacterBody2D"]
+script = ExtResource("1_ggo45")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_abb2j")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.192157, 0, 1)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_a86et")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 5.0
+target_desired_distance = 0.1
+path_postprocessing = 1
+
+[node name="SightedEffect" type="AudioStreamPlayer2D" parent="."]
+scale = Vector2(0.988331, 1.1663)
+stream = ExtResource("3_b1dnw")
+max_distance = 1300.0
+
+[node name="StepSound" type="AudioStreamPlayer2D" parent="."]
+scale = Vector2(0.996682, 1.01438)
+stream = ExtResource("4_45w83")
+volume_db = 5.0
+max_distance = 1300.0
+attenuation = 2.0
+
+[node name="Legs" type="Node2D" parent="."]
+
+[node name="TestLeg" parent="Legs" node_paths=PackedStringArray("target") instance=ExtResource("5_60ttm")]
+target = NodePath("../..")
+
+[node name="TestLeg2" parent="Legs" node_paths=PackedStringArray("target") instance=ExtResource("5_60ttm")]
+target = NodePath("../..")
+
+[node name="TestLeg3" parent="Legs" node_paths=PackedStringArray("target") instance=ExtResource("5_60ttm")]
+target = NodePath("../..")
+
+[node name="TestLeg4" parent="Legs" node_paths=PackedStringArray("target") instance=ExtResource("5_60ttm")]
+target = NodePath("../..")
+
+[node name="TestLeg5" parent="Legs" node_paths=PackedStringArray("target") instance=ExtResource("5_60ttm")]
+target = NodePath("../..")
+
+[node name="TestLeg6" parent="Legs" node_paths=PackedStringArray("target") instance=ExtResource("5_60ttm")]
+target = NodePath("../..")

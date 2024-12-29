@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://5ms1rvg07ydp"]
+
+[ext_resource type="Script" path="res://Scripts/TestLeg.gd" id="1_1c13r"]
+[ext_resource type="AudioStream" uid="uid://br705cd7ifgrj" path="res://SoundEffects/pider.mp3" id="2_85l3j"]
+
+[node name="TestLeg" type="Node2D"]
+script = ExtResource("1_1c13r")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 150, 0, 0, 0)
+width = 6.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Footstep" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_85l3j")
+volume_db = -3.0
+pitch_scale = 0.7

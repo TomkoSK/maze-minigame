@@ -6,15 +6,18 @@ extends CharacterBody2D
 @export var BLIND_CHASE_DURATION : float
 
 var speedMultiplier = 1.0#Changed by halo pieces when picked up, 1 by default
+var blindChaseHaloModifier = 0#Changed by halo pieces when picked up
 
 var mode
 var stunned
+var lightStunned
 var blindTime
 var startDirection = null
 var chaseDirection = null
 var oppositeDirection = null
 var lastFramePos = Vector2.ZERO
 var currentDirection = Vector2.ZERO
+var stunnedDirection
 	
 func _ready():
 	mode = "wander"
@@ -44,12 +47,13 @@ func _physics_process(_delta):
 		getPath()
 
 	var direction = $NavigationAgent2D.get_next_path_position()-position
+	if(lightStunned):
+		direction = stunnedDirection
 
 	if(mode == "wander"):
 		velocity = direction.normalized()*WANDER_SPEED*speedMultiplier
 	else:
 		velocity = direction.normalized()*RUN_SPEED*speedMultiplier
-	
 	if(mode == "chase" or mode =="chaseBlind"):
 		if(not $StepSound.playing and not stunned):
 			$StepSound.play()
@@ -69,7 +73,7 @@ func getPath():
 	if(mode == "chase"):
 		$NavigationAgent2D.target_position = target.position
 	if(mode == "chaseBlind"):
-		if(Time.get_ticks_msec()-blindTime > BLIND_CHASE_DURATION*1000):
+		if(Time.get_ticks_msec()-blindTime > (BLIND_CHASE_DURATION+blindChaseHaloModifier)*1000):
 			mode = "wander"
 			get_path()
 			return
@@ -202,14 +206,21 @@ func getStartDirection():
 			smallestDistance = Vector2(x*160, (y+1)*160).distance_to(startPosition)
 	startDirection = closestDirection
 
-func stun(duration):
+func stun(duration, lightStun=false):
 	stunned = true
 	$SightedEffect.play()
 	var tempWalkSpeed = WANDER_SPEED
 	var tempRunSpeed = RUN_SPEED
 	RUN_SPEED = 0
 	WANDER_SPEED = 0
+	if(lightStun):
+		lightStunned = true
+		stunnedDirection = currentDirection
+		RUN_SPEED = -tempRunSpeed*0.8
+		for leg in $Legs.get_children():
+			leg.stun(duration)
 	await get_tree().create_timer(duration).timeout
 	RUN_SPEED = tempRunSpeed
 	WANDER_SPEED = tempWalkSpeed
 	stunned = false
+	lightStunned = false

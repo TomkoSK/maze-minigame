@@ -13,4 +13,5 @@ func _on_area_2d_body_entered(body:Node2D):
 		player.keys[textureName] = true
 		player.pickUpHalo(self)
 		monster.speedMultiplier += 0.2
+		monster.blindChaseHaloModifier += 2
 		queue_free()
