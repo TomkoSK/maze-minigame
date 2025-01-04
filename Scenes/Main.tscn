@@ -205,11 +205,13 @@ layer_0/tile_data = PackedInt32Array(1310718, 0, 1, 1310717, 0, 1, 1310716, 0, 1
 script = ExtResource("5_hr54a")
 
 [node name="FloorSprite" type="Sprite2D" parent="Tilemap"]
+visible = false
 z_index = -1
 position = Vector2(-80, -80)
 texture = ExtResource("5_emb3c")
 
 [node name="BgSprite" type="Sprite2D" parent="Tilemap"]
+visible = false
 z_index = -6
 position = Vector2(49, 920)
 scale = Vector2(1488.07, 1625.94)
@@ -244,6 +246,7 @@ scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_jn2d2")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 color = Color(0, 0, 0, 1)
 
 [node name="Monster" parent="." node_paths=PackedStringArray("target") instance=ExtResource("11_tdcqe")]

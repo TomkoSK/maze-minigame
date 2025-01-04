@@ -28,8 +28,11 @@ var keys = {"halo0.png" : false, "halo1.png" : false, "halo2.png" : false}#chang
 
 var inDarkHallway = false
 
+func getDirection():#remove later just for spider leg fun
+	return velocity.normalized()
+
 func _process(delta):
-	if(position.x < -9*160-80 or position.x > (19+2)*160+80 or position.y < -2*160-80 or position.y > (19+2)*160+80):#MAZECHANGE
+	if(position.x < -9*160-80 or position.x > (21+2)*160+80 or position.y < -2*160-80 or position.y > (21+2)*160+80):#MAZECHANGE
 		if(position.x < -9*160-80):
 			get_tree().quit()#this is dark hallway ending
 		else:
@@ -60,7 +63,7 @@ func _process(delta):
 
 	if(monsterInFlashlightHitbox and $Flashlight/Light.energy >= 4.1 and Time.get_ticks_msec()-lastStunnedAt >= MONSTER_STUN_COOLDOWN and monster.RUN_SPEED > 0):
 		lastStunnedAt = Time.get_ticks_msec()
-		monster.stun(2, true)
+		monster.stun(2.5, true)
 
 	if(Time.get_ticks_msec()-lastInputAt > afkLength and not inDarkHallway):
 		darkening = true

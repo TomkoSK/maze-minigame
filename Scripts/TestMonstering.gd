@@ -67,8 +67,8 @@ func getDirection() -> Vector2:
 func getPath():
 	if(mode == "wander"):
 		var rng = RandomNumberGenerator.new()
-		var x = rng.randi_range(0, 19)#MAZECHANGE
-		var y = rng.randi_range(0, 19)
+		var x = rng.randi_range(0, 21)#MAZECHANGE
+		var y = rng.randi_range(0, 21)
 		$NavigationAgent2D.target_position = Vector2(x*160, y*160)
 	if(mode == "chase"):
 		$NavigationAgent2D.target_position = target.position
