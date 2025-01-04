@@ -5,7 +5,7 @@ uniform float grain_size = 0.006;
 uniform float grain_opacity = 0.025;
 
 float random (vec2 uv) {
-	float time = 0.0;
+	float time = floor(TIME);
 	while(time < TIME){
 		time += max(change_frequency, 0.02);
 	}
