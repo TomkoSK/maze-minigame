@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://djol3v5xv1neq"]
 
 [ext_resource type="Texture2D" uid="uid://bgtjs6n4l1wgd" path="res://catchblack.png" id="1_gv2kt"]
-[ext_resource type="Script" path="res://Scripts/CatchEnding.gd" id="1_uq4jw"]
+[ext_resource type="Script" uid="uid://qrhmd51wwh8w" path="res://Scripts/CatchEnding.gd" id="1_uq4jw"]
 [ext_resource type="Texture2D" uid="uid://bped50yhsd40b" path="res://catchwhite.png" id="2_r1n5l"]
 
 [node name="CatchEnding" type="Node2D"]

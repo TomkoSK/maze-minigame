@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://5ms1rvg07ydp"]
 
-[ext_resource type="Script" path="res://Scripts/TestLeg.gd" id="1_1c13r"]
+[ext_resource type="Script" uid="uid://blsp0usm7q2kr" path="res://Scripts/TestLeg.gd" id="1_1c13r"]
 [ext_resource type="AudioStream" uid="uid://br705cd7ifgrj" path="res://SoundEffects/pider.mp3" id="2_85l3j"]
 
 [node name="TestLeg" type="Node2D"]

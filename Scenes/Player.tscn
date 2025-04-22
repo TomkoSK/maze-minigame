@@ -1,10 +1,10 @@
 [gd_scene load_steps=16 format=3 uid="uid://djfyvo87iv3jf"]
 
-[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_pb76f"]
+[ext_resource type="Script" uid="uid://dow27umj1wul5" path="res://Scripts/Player.gd" id="1_pb76f"]
 [ext_resource type="Texture2D" uid="uid://ba2vdnscmq6cj" path="res://icon.svg" id="2_i7nb4"]
 [ext_resource type="Texture2D" uid="uid://ct3efvlcojfxy" path="res://flash.png" id="3_tkgkk"]
 [ext_resource type="Texture2D" uid="uid://ck6hxnn2mekwx" path="res://cone.png" id="3_vikql"]
-[ext_resource type="Script" path="res://Scripts/Flashlight.gd" id="4_f8c8n"]
+[ext_resource type="Script" uid="uid://ddj5pwihv3wqh" path="res://Scripts/Flashlight.gd" id="4_f8c8n"]
 [ext_resource type="Texture2D" uid="uid://ds2dcu4hu25j" path="res://uncone_flashligh.png" id="4_oc82a"]
 [ext_resource type="Texture2D" uid="uid://6ka087b5hml0" path="res://hand.png" id="7_4cvnp"]
 [ext_resource type="Texture2D" uid="uid://dwlbbijjjo0al" path="res://halo0.png" id="8_euu7f"]

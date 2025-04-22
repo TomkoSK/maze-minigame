@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dn8uqxm42ngso"]
 
-[ext_resource type="Script" path="res://Scripts/TestMonstering.gd" id="1_ggo45"]
+[ext_resource type="Script" uid="uid://bku38cs4s432n" path="res://Scripts/TestMonstering.gd" id="1_ggo45"]
 [ext_resource type="Texture2D" uid="uid://ba2vdnscmq6cj" path="res://icon.svg" id="2_a86et"]
 [ext_resource type="AudioStream" uid="uid://clo707msnl1jk" path="res://SoundEffects/scream.mp3" id="3_b1dnw"]
 [ext_resource type="AudioStream" uid="uid://buioq4jsgw2ot" path="res://SoundEffects/steps(1).mp3" id="4_45w83"]
